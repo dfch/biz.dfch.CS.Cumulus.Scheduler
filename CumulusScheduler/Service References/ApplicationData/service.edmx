@@ -1,0 +1,430 @@
+﻿<edmx:Edmx Version="1.0" xmlns:edmx="http://schemas.microsoft.com/ado/2007/06/edmx">
+  <edmx:DataServices xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata" m:DataServiceVersion="1.0" m:MaxDataServiceVersion="3.0">
+    <Schema xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" Namespace="LightSwitchApplication" Alias="Self" xmlns="http://schemas.microsoft.com/ado/2008/09/edm">
+      <EntityType Name="Address">
+        <Key>
+          <PropertyRef Name="Id" />
+        </Key>
+        <Property Name="Id" Type="Edm.Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+        <Property Name="Name" Type="Edm.String" Nullable="false" MaxLength="255" />
+        <Property Name="Value" Type="Edm.String" Nullable="false" MaxLength="255" />
+        <Property Name="Description" Type="Edm.String" MaxLength="255" />
+        <Property Name="Reference" Type="Edm.String" Nullable="false" MaxLength="255" />
+        <Property Name="Type" Type="Edm.String" Nullable="false" MaxLength="255" />
+        <Property Name="Status" Type="Edm.String" MaxLength="255" />
+        <Property Name="Address_Vlan" Type="Edm.Int32" Nullable="false" />
+        <Property Name="CreatedBy" Type="Edm.String" MaxLength="255" />
+        <Property Name="Created" Type="Edm.DateTimeOffset" />
+        <Property Name="ModifiedBy" Type="Edm.String" MaxLength="255" />
+        <Property Name="Modified" Type="Edm.DateTimeOffset" />
+        <Property Name="RowVersion" Type="Edm.Binary" Nullable="false" ConcurrencyMode="Fixed" annotation:StoreGeneratedPattern="Computed" />
+        <NavigationProperty Name="Vlan" Relationship="LightSwitchApplication.Address_Vlan" ToRole="Vlan" FromRole="Address" />
+      </EntityType>
+      <EntityType Name="Announcement">
+        <Key>
+          <PropertyRef Name="Id" />
+        </Key>
+        <Property Name="Id" Type="Edm.Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+        <Property Name="Name" Type="Edm.String" Nullable="false" MaxLength="255" />
+        <Property Name="Description" Type="Edm.String" MaxLength="255" />
+        <Property Name="ValidFrom" Type="Edm.DateTime" />
+        <Property Name="ValidUntil" Type="Edm.DateTime" />
+        <Property Name="Locale" Type="Edm.String" MaxLength="255" />
+        <Property Name="CreatedBy" Type="Edm.String" MaxLength="255" />
+        <Property Name="Created" Type="Edm.DateTimeOffset" />
+        <Property Name="ModifiedBy" Type="Edm.String" MaxLength="255" />
+        <Property Name="Modified" Type="Edm.DateTimeOffset" />
+        <Property Name="RowVersion" Type="Edm.Binary" Nullable="false" ConcurrencyMode="Fixed" annotation:StoreGeneratedPattern="Computed" />
+      </EntityType>
+      <EntityType Name="AppCategory">
+        <Key>
+          <PropertyRef Name="Id" />
+        </Key>
+        <Property Name="Id" Type="Edm.Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+        <Property Name="Name" Type="Edm.String" Nullable="false" MaxLength="255" />
+        <Property Name="Description" Type="Edm.String" MaxLength="255" />
+        <Property Name="isActive" Type="Edm.Boolean" Nullable="false" />
+        <Property Name="Icon" Type="Edm.Binary" MaxLength="Max" />
+        <Property Name="CreatedBy" Type="Edm.String" MaxLength="255" />
+        <Property Name="Created" Type="Edm.DateTimeOffset" />
+        <Property Name="ModifiedBy" Type="Edm.String" MaxLength="255" />
+        <Property Name="Modified" Type="Edm.DateTimeOffset" />
+        <Property Name="RowVersion" Type="Edm.Binary" Nullable="false" ConcurrencyMode="Fixed" annotation:StoreGeneratedPattern="Computed" />
+        <NavigationProperty Name="AppScreens" Relationship="LightSwitchApplication.AppCategory_AppScreen" ToRole="AppScreen" FromRole="AppCategory" />
+      </EntityType>
+      <EntityType Name="AppScreen">
+        <Key>
+          <PropertyRef Name="Id" />
+        </Key>
+        <Property Name="Id" Type="Edm.Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+        <Property Name="Name" Type="Edm.String" Nullable="false" MaxLength="255" />
+        <Property Name="Description" Type="Edm.String" MaxLength="255" />
+        <Property Name="isActive" Type="Edm.Boolean" Nullable="false" />
+        <Property Name="Screen" Type="Edm.String" Nullable="false" MaxLength="255" />
+        <Property Name="Icon" Type="Edm.Binary" MaxLength="Max" />
+        <Property Name="AppCategory_AppScreen" Type="Edm.Int32" Nullable="false" />
+        <Property Name="Permission" Type="Edm.String" MaxLength="255" />
+        <Property Name="CreatedBy" Type="Edm.String" MaxLength="255" />
+        <Property Name="Created" Type="Edm.DateTimeOffset" />
+        <Property Name="ModifiedBy" Type="Edm.String" MaxLength="255" />
+        <Property Name="Modified" Type="Edm.DateTimeOffset" />
+        <Property Name="RowVersion" Type="Edm.Binary" Nullable="false" ConcurrencyMode="Fixed" annotation:StoreGeneratedPattern="Computed" />
+        <NavigationProperty Name="AppCategory" Relationship="LightSwitchApplication.AppCategory_AppScreen" ToRole="AppCategory" FromRole="AppScreen" />
+      </EntityType>
+      <EntityType Name="AuditTrail">
+        <Key>
+          <PropertyRef Name="Id" />
+        </Key>
+        <Property Name="Id" Type="Edm.Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+        <Property Name="FunctionName" Type="Edm.String" Nullable="false" MaxLength="255" />
+        <Property Name="Message" Type="Edm.String" Nullable="false" MaxLength="4000" />
+        <Property Name="CreatedBy" Type="Edm.String" MaxLength="255" />
+        <Property Name="Created" Type="Edm.DateTimeOffset" />
+        <Property Name="ModifiedBy" Type="Edm.String" MaxLength="255" />
+        <Property Name="Modified" Type="Edm.DateTimeOffset" />
+        <Property Name="RowVersion" Type="Edm.Binary" Nullable="false" ConcurrencyMode="Fixed" annotation:StoreGeneratedPattern="Computed" />
+      </EntityType>
+      <EntityType Name="Command">
+        <Key>
+          <PropertyRef Name="Id" />
+        </Key>
+        <Property Name="Id" Type="Edm.Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+        <Property Name="Name" Type="Edm.String" Nullable="false" MaxLength="255" />
+        <Property Name="Description" Type="Edm.String" MaxLength="Max" />
+        <Property Name="Parameters" Type="Edm.String" Nullable="false" MaxLength="Max" />
+        <Property Name="Command_Computer" Type="Edm.Int32" Nullable="false" />
+        <Property Name="Status" Type="Edm.String" MaxLength="255" />
+        <Property Name="CreatedBy" Type="Edm.String" MaxLength="255" />
+        <Property Name="Created" Type="Edm.DateTimeOffset" />
+        <Property Name="ModifiedBy" Type="Edm.String" MaxLength="255" />
+        <Property Name="Modified" Type="Edm.DateTimeOffset" />
+        <Property Name="RowVersion" Type="Edm.Binary" Nullable="false" ConcurrencyMode="Fixed" annotation:StoreGeneratedPattern="Computed" />
+        <NavigationProperty Name="Computer" Relationship="LightSwitchApplication.Command_Computer" ToRole="Computer" FromRole="Command" />
+      </EntityType>
+      <EntityType Name="Computer">
+        <Key>
+          <PropertyRef Name="Id" />
+        </Key>
+        <Property Name="Id" Type="Edm.Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+        <Property Name="Name" Type="Edm.String" Nullable="false" MaxLength="255" />
+        <Property Name="Description" Type="Edm.String" MaxLength="4000" />
+        <Property Name="Parameters" Type="Edm.String" MaxLength="255" />
+        <Property Name="CreatedBy" Type="Edm.String" MaxLength="255" />
+        <Property Name="Created" Type="Edm.DateTimeOffset" />
+        <Property Name="ModifiedBy" Type="Edm.String" MaxLength="255" />
+        <Property Name="Modified" Type="Edm.DateTimeOffset" />
+        <Property Name="RowVersion" Type="Edm.Binary" Nullable="false" ConcurrencyMode="Fixed" annotation:StoreGeneratedPattern="Computed" />
+        <NavigationProperty Name="Commands" Relationship="LightSwitchApplication.Command_Computer" ToRole="Command" FromRole="Computer" />
+      </EntityType>
+      <EntityType Name="File">
+        <Key>
+          <PropertyRef Name="Id" />
+        </Key>
+        <Property Name="Id" Type="Edm.Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+        <Property Name="Name" Type="Edm.String" Nullable="false" MaxLength="4000" />
+        <Property Name="Version" Type="Edm.Int32" Nullable="false" />
+        <Property Name="Description" Type="Edm.String" MaxLength="Max" />
+        <Property Name="Value" Type="Edm.String" MaxLength="Max" />
+        <Property Name="Checksum" Type="Edm.String" MaxLength="255" />
+        <Property Name="CreatedBy" Type="Edm.String" MaxLength="255" />
+        <Property Name="Created" Type="Edm.DateTimeOffset" />
+        <Property Name="ModifiedBy" Type="Edm.String" MaxLength="255" />
+        <Property Name="Modified" Type="Edm.DateTimeOffset" />
+        <Property Name="RowVersion" Type="Edm.Binary" Nullable="false" ConcurrencyMode="Fixed" annotation:StoreGeneratedPattern="Computed" />
+      </EntityType>
+      <EntityType Name="IaasGroup">
+        <Key>
+          <PropertyRef Name="Id" />
+        </Key>
+        <Property Name="Id" Type="Edm.Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+        <Property Name="Name" Type="Edm.String" Nullable="false" MaxLength="Max" />
+        <Property Name="Description" Type="Edm.String" MaxLength="Max" />
+        <Property Name="Type" Type="Edm.String" Nullable="false" MaxLength="255" />
+        <Property Name="Parameters" Type="Edm.String" MaxLength="Max" />
+        <Property Name="CreatedBy" Type="Edm.String" MaxLength="255" />
+        <Property Name="Created" Type="Edm.DateTimeOffset" />
+        <Property Name="ModifiedBy" Type="Edm.String" MaxLength="255" />
+        <Property Name="Modified" Type="Edm.DateTimeOffset" />
+        <Property Name="RowVersion" Type="Edm.Binary" Nullable="false" ConcurrencyMode="Fixed" annotation:StoreGeneratedPattern="Computed" />
+      </EntityType>
+      <EntityType Name="KeyNameValue">
+        <Key>
+          <PropertyRef Name="Id" />
+        </Key>
+        <Property Name="Id" Type="Edm.Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+        <Property Name="Key" Type="Edm.String" Nullable="false" MaxLength="Max" />
+        <Property Name="Name" Type="Edm.String" Nullable="false" MaxLength="Max" />
+        <Property Name="Value" Type="Edm.String" Nullable="false" MaxLength="Max" />
+        <Property Name="CreatedBy" Type="Edm.String" MaxLength="255" />
+        <Property Name="Created" Type="Edm.DateTimeOffset" />
+        <Property Name="ModifiedBy" Type="Edm.String" MaxLength="255" />
+        <Property Name="Modified" Type="Edm.DateTimeOffset" />
+        <Property Name="RowVersion" Type="Edm.Binary" Nullable="false" ConcurrencyMode="Fixed" annotation:StoreGeneratedPattern="Computed" />
+      </EntityType>
+      <EntityType Name="LockMutexInternal">
+        <Key>
+          <PropertyRef Name="Id" />
+        </Key>
+        <Property Name="Id" Type="Edm.Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+        <Property Name="Name" Type="Edm.String" Nullable="false" MaxLength="255" />
+        <Property Name="Description" Type="Edm.String" MaxLength="255" />
+        <Property Name="CreatedBy" Type="Edm.String" MaxLength="255" />
+        <Property Name="Created" Type="Edm.DateTimeOffset" />
+        <Property Name="ModifiedBy" Type="Edm.String" MaxLength="255" />
+        <Property Name="Modified" Type="Edm.DateTimeOffset" />
+        <Property Name="RowVersion" Type="Edm.Binary" Nullable="false" ConcurrencyMode="Fixed" annotation:StoreGeneratedPattern="Computed" />
+      </EntityType>
+      <EntityType Name="ManagementCredential">
+        <Key>
+          <PropertyRef Name="Id" />
+        </Key>
+        <Property Name="Id" Type="Edm.Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+        <Property Name="Name" Type="Edm.String" Nullable="false" MaxLength="4000" />
+        <Property Name="Description" Type="Edm.String" MaxLength="Max" />
+        <Property Name="Username" Type="Edm.String" MaxLength="Max" />
+        <Property Name="Password" Type="Edm.String" MaxLength="Max" />
+        <Property Name="CreatedBy" Type="Edm.String" MaxLength="255" />
+        <Property Name="Created" Type="Edm.DateTimeOffset" />
+        <Property Name="ModifiedBy" Type="Edm.String" MaxLength="255" />
+        <Property Name="Modified" Type="Edm.DateTimeOffset" />
+        <Property Name="RowVersion" Type="Edm.Binary" Nullable="false" ConcurrencyMode="Fixed" annotation:StoreGeneratedPattern="Computed" />
+        <NavigationProperty Name="ManagementUris" Relationship="LightSwitchApplication.ManagementUri_ManagementCredential" ToRole="ManagementUri" FromRole="ManagementCredential" />
+      </EntityType>
+      <EntityType Name="ManagementUri">
+        <Key>
+          <PropertyRef Name="Id" />
+        </Key>
+        <Property Name="Id" Type="Edm.Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+        <Property Name="Name" Type="Edm.String" Nullable="false" MaxLength="4000" />
+        <Property Name="Description" Type="Edm.String" MaxLength="Max" />
+        <Property Name="Type" Type="Edm.String" MaxLength="255" />
+        <Property Name="Value" Type="Edm.String" MaxLength="Max" />
+        <Property Name="ManagementUri_ManagementCredential" Type="Edm.Int32" Nullable="false" />
+        <Property Name="CreatedBy" Type="Edm.String" MaxLength="255" />
+        <Property Name="Created" Type="Edm.DateTimeOffset" />
+        <Property Name="ModifiedBy" Type="Edm.String" MaxLength="255" />
+        <Property Name="Modified" Type="Edm.DateTimeOffset" />
+        <Property Name="RowVersion" Type="Edm.Binary" Nullable="false" ConcurrencyMode="Fixed" annotation:StoreGeneratedPattern="Computed" />
+        <NavigationProperty Name="ManagementCredential" Relationship="LightSwitchApplication.ManagementUri_ManagementCredential" ToRole="ManagementCredential" FromRole="ManagementUri" />
+      </EntityType>
+      <EntityType Name="Region">
+        <Key>
+          <PropertyRef Name="Id" />
+        </Key>
+        <Property Name="Id" Type="Edm.Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+        <Property Name="Name" Type="Edm.String" Nullable="false" MaxLength="255" />
+        <Property Name="Description" Type="Edm.String" Nullable="false" MaxLength="255" />
+        <Property Name="CreatedBy" Type="Edm.String" MaxLength="255" />
+        <Property Name="Created" Type="Edm.DateTimeOffset" />
+        <Property Name="ModifiedBy" Type="Edm.String" MaxLength="255" />
+        <Property Name="Modified" Type="Edm.DateTimeOffset" />
+        <Property Name="RowVersion" Type="Edm.Binary" Nullable="false" ConcurrencyMode="Fixed" annotation:StoreGeneratedPattern="Computed" />
+        <NavigationProperty Name="Sites" Relationship="LightSwitchApplication.Site_Region" ToRole="Site" FromRole="Region" />
+      </EntityType>
+      <EntityType Name="RequestItem">
+        <Key>
+          <PropertyRef Name="Id" />
+        </Key>
+        <Property Name="Id" Type="Edm.Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+        <Property Name="Status" Type="Edm.String" Nullable="false" MaxLength="255" />
+        <Property Name="Description" Type="Edm.String" MaxLength="Max" />
+        <Property Name="Type" Type="Edm.String" Nullable="false" MaxLength="255" />
+        <Property Name="Version" Type="Edm.Int32" Nullable="false" />
+        <Property Name="Template" Type="Edm.String" Nullable="false" MaxLength="255" />
+        <Property Name="Parameters" Type="Edm.String" Nullable="false" MaxLength="Max" />
+        <Property Name="CreatedBy" Type="Edm.String" MaxLength="255" />
+        <Property Name="Created" Type="Edm.DateTimeOffset" />
+        <Property Name="ModifiedBy" Type="Edm.String" MaxLength="255" />
+        <Property Name="Modified" Type="Edm.DateTimeOffset" />
+        <Property Name="RowVersion" Type="Edm.Binary" Nullable="false" ConcurrencyMode="Fixed" annotation:StoreGeneratedPattern="Computed" />
+      </EntityType>
+      <EntityType Name="Site">
+        <Key>
+          <PropertyRef Name="Id" />
+        </Key>
+        <Property Name="Id" Type="Edm.Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+        <Property Name="Name" Type="Edm.String" Nullable="false" MaxLength="255" />
+        <Property Name="Description" Type="Edm.String" Nullable="false" MaxLength="4000" />
+        <Property Name="Site_Region" Type="Edm.Int32" Nullable="false" />
+        <Property Name="CreatedBy" Type="Edm.String" MaxLength="255" />
+        <Property Name="Created" Type="Edm.DateTimeOffset" />
+        <Property Name="ModifiedBy" Type="Edm.String" MaxLength="255" />
+        <Property Name="Modified" Type="Edm.DateTimeOffset" />
+        <Property Name="RowVersion" Type="Edm.Binary" Nullable="false" ConcurrencyMode="Fixed" annotation:StoreGeneratedPattern="Computed" />
+        <NavigationProperty Name="Region" Relationship="LightSwitchApplication.Site_Region" ToRole="Region" FromRole="Site" />
+        <NavigationProperty Name="Vlans" Relationship="LightSwitchApplication.Vlan_Site" ToRole="Vlan" FromRole="Site" />
+      </EntityType>
+      <EntityType Name="VirtualMachine">
+        <Key>
+          <PropertyRef Name="Id" />
+        </Key>
+        <Property Name="Id" Type="Edm.Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+        <Property Name="vCpu" Type="Edm.Int32" Nullable="false" />
+        <Property Name="vCpuSpeedGhz" Type="Edm.Double" Nullable="false" />
+        <Property Name="vMemory" Type="Edm.Double" Nullable="false" />
+        <Property Name="vMemoryReservation" Type="Edm.Int32" Nullable="false" />
+        <Property Name="vCpuReservation" Type="Edm.Int32" Nullable="false" />
+        <Property Name="MaxSocketPerHostCluster" Type="Edm.Int32" Nullable="false" />
+        <Property Name="OneHostPerVm" Type="Edm.Boolean" Nullable="false" />
+        <Property Name="CreatedBy" Type="Edm.String" MaxLength="255" />
+        <Property Name="Created" Type="Edm.DateTimeOffset" />
+        <Property Name="ModifiedBy" Type="Edm.String" MaxLength="255" />
+        <Property Name="Modified" Type="Edm.DateTimeOffset" />
+        <Property Name="RowVersion" Type="Edm.Binary" Nullable="false" ConcurrencyMode="Fixed" annotation:StoreGeneratedPattern="Computed" />
+      </EntityType>
+      <EntityType Name="Vlan">
+        <Key>
+          <PropertyRef Name="Id" />
+        </Key>
+        <Property Name="Id" Type="Edm.Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+        <Property Name="Name" Type="Edm.String" Nullable="false" MaxLength="255" />
+        <Property Name="Description" Type="Edm.String" MaxLength="4000" />
+        <Property Name="Vlan_Site" Type="Edm.Int32" Nullable="false" />
+        <Property Name="Network" Type="Edm.String" Nullable="false" MaxLength="255" />
+        <Property Name="NetworkAddress" Type="Edm.String" MaxLength="255" />
+        <Property Name="SubnetMask" Type="Edm.String" MaxLength="255" />
+        <Property Name="Gateway" Type="Edm.String" MaxLength="255" />
+        <Property Name="Reference" Type="Edm.String" Nullable="false" MaxLength="255" />
+        <Property Name="Comment" Type="Edm.String" MaxLength="255" />
+        <Property Name="CreatedBy" Type="Edm.String" MaxLength="255" />
+        <Property Name="Created" Type="Edm.DateTimeOffset" />
+        <Property Name="ModifiedBy" Type="Edm.String" MaxLength="255" />
+        <Property Name="Modified" Type="Edm.DateTimeOffset" />
+        <Property Name="RowVersion" Type="Edm.Binary" Nullable="false" ConcurrencyMode="Fixed" annotation:StoreGeneratedPattern="Computed" />
+        <NavigationProperty Name="Site" Relationship="LightSwitchApplication.Vlan_Site" ToRole="Site" FromRole="Vlan" />
+        <NavigationProperty Name="Addresses" Relationship="LightSwitchApplication.Address_Vlan" ToRole="Address" FromRole="Vlan" />
+      </EntityType>
+      <Association Name="AppCategory_AppScreen">
+        <End Role="AppCategory" Type="LightSwitchApplication.AppCategory" Multiplicity="1" />
+        <End Role="AppScreen" Type="LightSwitchApplication.AppScreen" Multiplicity="*" />
+        <ReferentialConstraint>
+          <Principal Role="AppCategory">
+            <PropertyRef Name="Id" />
+          </Principal>
+          <Dependent Role="AppScreen">
+            <PropertyRef Name="AppCategory_AppScreen" />
+          </Dependent>
+        </ReferentialConstraint>
+      </Association>
+      <Association Name="Command_Computer">
+        <End Role="Computer" Type="LightSwitchApplication.Computer" Multiplicity="1">
+          <OnDelete Action="Cascade" />
+        </End>
+        <End Role="Command" Type="LightSwitchApplication.Command" Multiplicity="*" />
+        <ReferentialConstraint>
+          <Principal Role="Computer">
+            <PropertyRef Name="Id" />
+          </Principal>
+          <Dependent Role="Command">
+            <PropertyRef Name="Command_Computer" />
+          </Dependent>
+        </ReferentialConstraint>
+      </Association>
+      <Association Name="ManagementUri_ManagementCredential">
+        <End Role="ManagementCredential" Type="LightSwitchApplication.ManagementCredential" Multiplicity="1" />
+        <End Role="ManagementUri" Type="LightSwitchApplication.ManagementUri" Multiplicity="*" />
+        <ReferentialConstraint>
+          <Principal Role="ManagementCredential">
+            <PropertyRef Name="Id" />
+          </Principal>
+          <Dependent Role="ManagementUri">
+            <PropertyRef Name="ManagementUri_ManagementCredential" />
+          </Dependent>
+        </ReferentialConstraint>
+      </Association>
+      <Association Name="Site_Region">
+        <End Role="Region" Type="LightSwitchApplication.Region" Multiplicity="1" />
+        <End Role="Site" Type="LightSwitchApplication.Site" Multiplicity="*" />
+        <ReferentialConstraint>
+          <Principal Role="Region">
+            <PropertyRef Name="Id" />
+          </Principal>
+          <Dependent Role="Site">
+            <PropertyRef Name="Site_Region" />
+          </Dependent>
+        </ReferentialConstraint>
+      </Association>
+      <Association Name="Vlan_Site">
+        <End Role="Site" Type="LightSwitchApplication.Site" Multiplicity="1" />
+        <End Role="Vlan" Type="LightSwitchApplication.Vlan" Multiplicity="*" />
+        <ReferentialConstraint>
+          <Principal Role="Site">
+            <PropertyRef Name="Id" />
+          </Principal>
+          <Dependent Role="Vlan">
+            <PropertyRef Name="Vlan_Site" />
+          </Dependent>
+        </ReferentialConstraint>
+      </Association>
+      <Association Name="Address_Vlan">
+        <End Role="Vlan" Type="LightSwitchApplication.Vlan" Multiplicity="1" />
+        <End Role="Address" Type="LightSwitchApplication.Address" Multiplicity="*" />
+        <ReferentialConstraint>
+          <Principal Role="Vlan">
+            <PropertyRef Name="Id" />
+          </Principal>
+          <Dependent Role="Address">
+            <PropertyRef Name="Address_Vlan" />
+          </Dependent>
+        </ReferentialConstraint>
+      </Association>
+      <EntityContainer Name="ApplicationData" m:IsDefaultEntityContainer="true">
+        <EntitySet Name="Addresses" EntityType="LightSwitchApplication.Address" />
+        <EntitySet Name="Announcements" EntityType="LightSwitchApplication.Announcement" />
+        <EntitySet Name="AppCategories" EntityType="LightSwitchApplication.AppCategory" />
+        <EntitySet Name="AppScreens" EntityType="LightSwitchApplication.AppScreen" />
+        <EntitySet Name="AuditTrails" EntityType="LightSwitchApplication.AuditTrail" />
+        <EntitySet Name="Commands" EntityType="LightSwitchApplication.Command" />
+        <EntitySet Name="Computers" EntityType="LightSwitchApplication.Computer" />
+        <EntitySet Name="Files" EntityType="LightSwitchApplication.File" />
+        <EntitySet Name="IaasGroups" EntityType="LightSwitchApplication.IaasGroup" />
+        <EntitySet Name="KeyNameValues" EntityType="LightSwitchApplication.KeyNameValue" />
+        <EntitySet Name="LockMutexInternals" EntityType="LightSwitchApplication.LockMutexInternal" />
+        <EntitySet Name="ManagementCredentials" EntityType="LightSwitchApplication.ManagementCredential" />
+        <EntitySet Name="ManagementUris" EntityType="LightSwitchApplication.ManagementUri" />
+        <EntitySet Name="Regions" EntityType="LightSwitchApplication.Region" />
+        <EntitySet Name="RequestItems" EntityType="LightSwitchApplication.RequestItem" />
+        <EntitySet Name="Sites" EntityType="LightSwitchApplication.Site" />
+        <EntitySet Name="VirtualMachines" EntityType="LightSwitchApplication.VirtualMachine" />
+        <EntitySet Name="Vlans" EntityType="LightSwitchApplication.Vlan" />
+        <AssociationSet Name="AppCategory_AppScreen" Association="LightSwitchApplication.AppCategory_AppScreen">
+          <End Role="AppCategory" EntitySet="AppCategories" />
+          <End Role="AppScreen" EntitySet="AppScreens" />
+        </AssociationSet>
+        <AssociationSet Name="Command_Computer" Association="LightSwitchApplication.Command_Computer">
+          <End Role="Computer" EntitySet="Computers" />
+          <End Role="Command" EntitySet="Commands" />
+        </AssociationSet>
+        <AssociationSet Name="ManagementUri_ManagementCredential" Association="LightSwitchApplication.ManagementUri_ManagementCredential">
+          <End Role="ManagementCredential" EntitySet="ManagementCredentials" />
+          <End Role="ManagementUri" EntitySet="ManagementUris" />
+        </AssociationSet>
+        <AssociationSet Name="Site_Region" Association="LightSwitchApplication.Site_Region">
+          <End Role="Region" EntitySet="Regions" />
+          <End Role="Site" EntitySet="Sites" />
+        </AssociationSet>
+        <AssociationSet Name="Vlan_Site" Association="LightSwitchApplication.Vlan_Site">
+          <End Role="Site" EntitySet="Sites" />
+          <End Role="Vlan" EntitySet="Vlans" />
+        </AssociationSet>
+        <AssociationSet Name="Address_Vlan" Association="LightSwitchApplication.Address_Vlan">
+          <End Role="Vlan" EntitySet="Vlans" />
+          <End Role="Address" EntitySet="Addresses" />
+        </AssociationSet>
+        <FunctionImport Name="AppCategoriesEnabledWithAppScreensByName" EntitySet="AppCategories" ReturnType="Collection(LightSwitchApplication.AppCategory)" m:HttpMethod="GET" />
+        <FunctionImport Name="AddressesByNameOrValue" EntitySet="Addresses" ReturnType="Collection(LightSwitchApplication.Address)" m:HttpMethod="GET">
+          <Parameter Name="QueryParameter" Type="Edm.String" Mode="In" />
+        </FunctionImport>
+        <FunctionImport Name="AppCategoriesEnabled" EntitySet="AppCategories" ReturnType="Collection(LightSwitchApplication.AppCategory)" m:HttpMethod="GET" />
+        <FunctionImport Name="PingRequest" EntitySet="Computers" ReturnType="Collection(LightSwitchApplication.Computer)" m:HttpMethod="GET" />
+        <FunctionImport Name="SitesByName" EntitySet="Sites" ReturnType="Collection(LightSwitchApplication.Site)" m:HttpMethod="GET">
+          <Parameter Name="QueryParameter" Type="Edm.String" Mode="In" />
+        </FunctionImport>
+        <FunctionImport Name="AuditTrails_QueryByCurrentUser" EntitySet="AuditTrails" ReturnType="Collection(LightSwitchApplication.AuditTrail)" m:HttpMethod="GET" />
+        <FunctionImport Name="Microsoft_LightSwitch_GetCanInformation" ReturnType="Edm.String" m:HttpMethod="GET">
+          <Parameter Name="dataServiceMembers" Type="Edm.String" Mode="In" />
+        </FunctionImport>
+      </EntityContainer>
+    </Schema>
+  </edmx:DataServices>
+</edmx:Edmx>

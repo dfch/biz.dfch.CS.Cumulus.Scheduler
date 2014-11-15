@@ -1,0 +1,65 @@
+﻿<edmx:Edmx Version="1.0" xmlns:edmx="http://schemas.microsoft.com/ado/2007/06/edmx">
+  <edmx:DataServices m:DataServiceVersion="3.0" m:MaxDataServiceVersion="3.0" xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata">
+    <Schema Namespace="LightSwitchApplication.Models" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+      <EntityType Name="HealthCheck">
+        <Key>
+          <PropertyRef Name="Id" />
+        </Key>
+        <Property Name="Id" Type="Edm.String" Nullable="false" />
+        <Property Name="Description" Type="Edm.String" />
+        <Property Name="TimeStamp" Type="Edm.DateTimeOffset" />
+        <Property Name="Status" Type="Edm.String" Nullable="false" />
+        <Property Name="Active" Type="Edm.Boolean" Nullable="false" />
+      </EntityType>
+      <EntityType Name="ManagementCredentialHelper">
+        <Key>
+          <PropertyRef Name="Id" />
+        </Key>
+        <Property Name="Id" Type="Edm.Int32" Nullable="false" />
+        <Property Name="Name" Type="Edm.String" />
+        <Property Name="Description" Type="Edm.String" />
+        <Property Name="Username" Type="Edm.String" />
+        <Property Name="Password" Type="Edm.String" />
+        <Property Name="Created" Type="Edm.DateTime" Nullable="false" />
+        <Property Name="CreatedBy" Type="Edm.String" />
+        <Property Name="Modified" Type="Edm.DateTime" Nullable="false" />
+        <Property Name="ModifiedBy" Type="Edm.String" />
+      </EntityType>
+      <EntityType Name="DispatchHelper">
+        <Key>
+          <PropertyRef Name="Id" />
+        </Key>
+        <Property Name="Id" Type="Edm.Int32" Nullable="false" />
+        <Property Name="Status" Type="Edm.String" />
+        <Property Name="Entity" Type="Edm.String" Nullable="false" />
+        <Property Name="EntitySet" Type="Edm.String" Nullable="false" />
+        <Property Name="Uri" Type="Edm.String" Nullable="false" />
+        <Property Name="LockName" Type="Edm.String" />
+        <Property Name="ErrorId" Type="Edm.String" />
+        <Property Name="ErrorMessage" Type="Edm.String" />
+      </EntityType>
+    </Schema>
+    <Schema Namespace="Default" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+      <EntityContainer Name="Utilities" m:IsDefaultEntityContainer="true">
+        <EntitySet Name="HealthChecks" EntityType="LightSwitchApplication.Models.HealthCheck" />
+        <EntitySet Name="ManagementCredentialHelpers" EntityType="LightSwitchApplication.Models.ManagementCredentialHelper" />
+        <EntitySet Name="DispatchHelpers" EntityType="LightSwitchApplication.Models.DispatchHelper" />
+        <FunctionImport Name="Acquire" ReturnType="LightSwitchApplication.Models.DispatchHelper" IsBindable="true" EntitySet="DispatchHelpers" m:IsAlwaysBindable="true">
+          <Parameter Name="bindingParameter" Type="Collection(LightSwitchApplication.Models.DispatchHelper)" Nullable="false" />
+          <Parameter Name="Id" Type="Edm.Int32" Nullable="false" />
+          <Parameter Name="Entity" Type="Edm.String" FixedLength="false" Unicode="false" />
+          <Parameter Name="EntitySet" Type="Edm.String" FixedLength="false" Unicode="false" />
+          <Parameter Name="Requester" Type="Edm.String" FixedLength="false" Unicode="false" />
+        </FunctionImport>
+        <FunctionImport Name="Release" ReturnType="LightSwitchApplication.Models.DispatchHelper" IsBindable="true" EntitySet="DispatchHelpers" m:IsAlwaysBindable="true">
+          <Parameter Name="bindingParameter" Type="Collection(LightSwitchApplication.Models.DispatchHelper)" Nullable="false" />
+          <Parameter Name="Id" Type="Edm.Int32" Nullable="false" />
+          <Parameter Name="Entity" Type="Edm.String" FixedLength="false" Unicode="false" />
+          <Parameter Name="EntitySet" Type="Edm.String" FixedLength="false" Unicode="false" />
+          <Parameter Name="Requester" Type="Edm.String" FixedLength="false" Unicode="false" />
+          <Parameter Name="Status" Type="Edm.String" FixedLength="false" Unicode="false" />
+        </FunctionImport>
+      </EntityContainer>
+    </Schema>
+  </edmx:DataServices>
+</edmx:Edmx>
