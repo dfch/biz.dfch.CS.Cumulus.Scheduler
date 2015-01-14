@@ -14,8 +14,8 @@ namespace CumulusScheduler
 {
     class ScheduledTask
     {
-        bool fInitialised = false;
-        int _VersionDefault = 0;
+        private bool _fInitialised = false;
+        private int _VersionDefault = 0;
 
         public ScheduledTaskParameters Parameters;
         public DateTime NextSchedule = DateTime.MinValue;
@@ -72,7 +72,7 @@ namespace CumulusScheduler
         public bool Initialise(string parameters, int Version, bool fThrowException = false)
         {
             var fReturn = false;
-            if (fInitialised) return fReturn;
+            if (_fInitialised) return fReturn;
 
             try
             {
@@ -97,7 +97,7 @@ namespace CumulusScheduler
             {
 
             }
-            this.fInitialised = fReturn;
+            this._fInitialised = fReturn;
             return fReturn;
         }
         public DateTime GetNextSchedule()
@@ -106,7 +106,7 @@ namespace CumulusScheduler
         }
         public DateTime GetNextSchedule(DateTime WithinThisMinute)
         {
-            var NextSchedule = DateTime.MinValue;
+            var nextSchedule = DateTime.MinValue;
             try
             {
                 if (!this.Parameters.Active)
@@ -114,20 +114,28 @@ namespace CumulusScheduler
                     return DateTime.MinValue;
                 }
                 var schedule = CrontabSchedule.Parse(this.Parameters.CrontabExpression);
-                var Now = WithinThisMinute;
-                var StartMinute = new DateTime(Now.Year, 1, 1, 0, 0, 0);
-                //var EndMinute = Now.AddMinutes(1).AddSeconds(-1);
-                var EndMinute = Now;
-                NextSchedule = schedule.GetNextOccurrences(StartMinute, EndMinute).Last();
-                if(NextSchedule.Minute < Now.Minute)
+                var now = WithinThisMinute;
+                var startMinute = new DateTime(now.Year, 1, 1, 0, 0, 0);
+                //var endMinute = now.AddMinutes(1).AddSeconds(-1);
+                var endMinute = now;
+                nextSchedule = schedule.GetNextOccurrences(startMinute, endMinute).LastOrDefault();
+                if (null == nextSchedule)
+                {
+                    Debug.WriteLine(string.Format(
+                        "{0}: Getting next occurrence for time range '{1}-{2}' [{3}] FAILED. Check CrontabExpression or time range.", 
+                        this.Parameters.CommandLine, 
+                        startMinute.ToString("yyyy-MM-dd HH:mm:ss.fffzzz"), 
+                        endMinute.ToString("yyyy-MM-dd HH:mm:ss.fffzzz"), 
+                        this.Parameters.CrontabExpression
+                        ));
+                    return DateTime.MinValue;
+                }
+                if(nextSchedule.Minute < now.Minute)
                 {
                     return DateTime.MinValue;
                 }
-                if (this.NextSchedule != NextSchedule)
-                {
-                    this.NextSchedule = NextSchedule;
-                }
-                return NextSchedule;
+                this.NextSchedule = nextSchedule;
+                return this.NextSchedule;
             }
             catch (CrontabException ex)
             {
@@ -147,8 +155,8 @@ namespace CumulusScheduler
         public bool IsScheduledToRun(DateTime WithinThisMinute)
         {
             var fReturn = false;
-            var NextSchedule = GetNextSchedule(WithinThisMinute);
-            if(!NextSchedule.Equals(DateTime.MinValue))
+            var nextSchedule = GetNextSchedule(WithinThisMinute);
+            if(!nextSchedule.Equals(DateTime.MinValue))
             {
                 fReturn = true;
             }

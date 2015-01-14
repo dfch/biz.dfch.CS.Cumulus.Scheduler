@@ -174,7 +174,7 @@ Success :
                 UpdateScheduledTasks();
 
                 _timerDelegate = new TimerCallback(this.RunTasks);
-                //var MilliSecondsToWait = (60 - DateTime.Now.Second) * 1000;
+                //var MilliSecondsToWait = (60 - DateTime.now.Second) * 1000;
                 //Debug.WriteLine(string.Format("Waiting {0}ms for begin of next minute ...", MilliSecondsToWait));
                 //System.Threading.Thread.Sleep(MilliSecondsToWait);
                 _stateTimer = new Timer(_timerDelegate, null, 1000, (1000 * 60) - 20);
@@ -228,8 +228,8 @@ Success :
                     //Debug.WriteLine(string.Format("Iterating list ... '{0}'", _list.Count));
                     foreach (var task in _list)
                     {
-                        //var NextSchedule = task.GetNextSchedule();
-                        //Debug.WriteLine(string.Format("Checked '{0}' [{1}].", task.Parameters.CommandLine, NextSchedule.ToString()));
+                        //var nextSchedule = task.GetNextSchedule();
+                        //Debug.WriteLine(string.Format("Checked '{0}' [{1}].", task.Parameters.CommandLine, nextSchedule.ToString()));
                         if (task.IsScheduledToRun(Now))
                         {
                             Debug.WriteLine(string.Format("Invoking '{0}' as '{1}' [{2}] ...", task.Parameters.CommandLine, task.Username, task.NextSchedule.ToString()));
