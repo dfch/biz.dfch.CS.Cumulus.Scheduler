@@ -57,15 +57,16 @@ namespace CumulusScheduler
 
             if (!_active) return fReturn;
 
+            ApplicationData.ManagementUri mgmtUri = null;
             try
             {
                 var Now = DateTime.Now;
-                var MgmtUri = _svcApplicationData.ManagementUris
+                mgmtUri = _svcApplicationData.ManagementUris
                     .Where(
                         e => e.Name.Equals(_managementUri, StringComparison.OrdinalIgnoreCase) &&
                         e.Type.Equals("CumulusScheduler", StringComparison.OrdinalIgnoreCase)
                     ).SingleOrDefault();
-                if(null == MgmtUri)
+                if(null == mgmtUri)
                 {
                     Debug.WriteLine("{0}: ManagementUri not found at '{1}'. Will retry later.", _managementUri, _svcApplicationData.BaseUri);
                     if (_serverNotReachableRetryMinutes <= (Now - _lastUpdate).TotalMinutes)
@@ -75,58 +76,25 @@ namespace CumulusScheduler
                     goto Success;
                 }
 
-                var jtoken = JToken.Parse(MgmtUri.Value);
-                if (jtoken is JArray)
+                var jtoken = JToken.Parse(mgmtUri.Value);
+                lock (_list)
                 {
-                    lock (_list)
+                    _list.Clear();
+                    if (jtoken is JArray)
                     {
-                        _list.Clear();
-                        var ja = JArray.Parse(MgmtUri.Value);
+                        var ja = JArray.Parse(mgmtUri.Value);
                         foreach (var j in ja)
                         {
-                            var task = new ScheduledTask(j.ToString());
-                            var MgmtCredential = _svcUtilities.ManagementCredentialHelpers
-                                .Where(
-                                    e => e.Name.Equals(task.Parameters.ManagementCredential, StringComparison.OrdinalIgnoreCase)
-                                ).Single();
-
-                            task.Username = MgmtCredential.Username;
-                            task.Password = MgmtCredential.Password;
-
-                            Debug.WriteLine(string.Format("{0}: Adding '{1}' ...", _managementUri, MgmtUri.Value));
-                            _svcUtilities.Detach(MgmtCredential);
-                            _list.Add(task);
+                            Debug.WriteLine(string.Format("{0}: Adding '{1}' ...", _managementUri, mgmtUri.Value));
+                            _list.Add(extractTask(j));
                         }
                     }
-                }
-                else if (jtoken is JObject)
-                {
-                    var task = new ScheduledTask(MgmtUri.Value);
-                    var MgmtCredential = _svcUtilities.ManagementCredentialHelpers
-                            .Where(
-                                e => e.Name.Equals(task.Parameters.ManagementCredential, StringComparison.OrdinalIgnoreCase)
-                            ).Single();
-
-                    task.Username = MgmtCredential.Username;
-                    task.Password = MgmtCredential.Password;
-
-                    Debug.WriteLine(string.Format("{0}: Adding '{1}' ...", _managementUri, MgmtUri.Value));
-                    _svcApplicationData.Detach(MgmtUri);
-                    _svcUtilities.Detach(MgmtCredential);
-                    lock (_list)
+                    else if (jtoken is JObject)
                     {
-                        _list.Clear();
-                        _list.Add(task);
+                        Debug.WriteLine(string.Format("{0}: Adding '{1}' ...", _managementUri, mgmtUri.Value));
+                        _list.Add(extractTask(jtoken));
                     }
                 }
-                else
-                {
-                    lock (_list)
-                    {
-                        _list.Clear();
-                    }
-                }
-                _svcApplicationData.Detach(MgmtUri);
             }
             catch(InvalidOperationException ex)
             {
@@ -140,11 +108,35 @@ namespace CumulusScheduler
                 Debug.WriteLine(string.Format("{0}: Timeout retrieving ManagementUri at '{1}'. Aborting ...", _managementUri, _svcApplicationData.BaseUri.AbsoluteUri));
                 throw;
             }
-
+            finally
+            {
+                if(null != mgmtUri)
+                {
+                    _svcApplicationData.Detach(mgmtUri);
+                }
+            }
 Success :
             _lastInitialised = DateTime.Now;
             fReturn = true;
             return fReturn;
+        }
+        private ScheduledTask extractTask(JToken taskParameters)
+        {
+            if (null == taskParameters)
+            {
+                throw new ArgumentException("taskParameters: Parameter validation FAILED. Parameter must not be null.", "taskParameters");
+            }
+            var task = new ScheduledTask(taskParameters.ToString());
+            var mgmtCredential = _svcUtilities.ManagementCredentialHelpers
+                .Where(
+                    e => e.Name.Equals(task.Parameters.ManagementCredential, StringComparison.OrdinalIgnoreCase)
+                ).Single();
+
+            task.Username = mgmtCredential.Username;
+            task.Password = mgmtCredential.Password;
+
+            _svcUtilities.Detach(mgmtCredential);
+            return task;
         }
         protected bool Initialise(string Uri, string ManagementUri, int UpdateIntervalMinutes, int ServerNotReachableRetries, bool fThrowException)
         {
