@@ -24,6 +24,13 @@ namespace CumulusScheduler
             if (Environment.UserInteractive)
             {
                 var service = new CumulusSchedulerService();
+
+                Console.CancelKeyPress += delegate(object sender, ConsoleCancelEventArgs e)
+                {
+                    e.Cancel = true;
+                    service.fAbort.Set();
+                };
+
                 service.OnStartInteractive(args);
             }
             else

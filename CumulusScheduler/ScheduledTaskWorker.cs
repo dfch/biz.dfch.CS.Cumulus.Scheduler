@@ -43,15 +43,13 @@ namespace CumulusScheduler
 
         public ScheduledTaskWorker(string Uri, string ManagementUri, int UpdateIntervalMinutes, int ServerNotReachableRetries)
         {
-            string fn = string.Format("{0}:{1}.{2}", this.GetType().Namespace, this.GetType().Name, System.Reflection.MethodBase.GetCurrentMethod().Name);
-            Debug.WriteLine(fn);
+            Debug.WriteLine("{0}:{1}.{2}", this.GetType().Namespace, this.GetType().Name, System.Reflection.MethodBase.GetCurrentMethod().Name);
 
             this.Initialise(Uri, ManagementUri, UpdateIntervalMinutes, ServerNotReachableRetries, true);
         }
         public bool UpdateScheduledTasks()
         {
-            string fn = string.Format("{0}:{1}.{2}", this.GetType().Namespace, this.GetType().Name, System.Reflection.MethodBase.GetCurrentMethod().Name);
-            Debug.WriteLine(fn);
+            Debug.WriteLine("{0}:{1}.{2}", this.GetType().Namespace, this.GetType().Name, System.Reflection.MethodBase.GetCurrentMethod().Name);
 
             var fReturn = false;
 
@@ -140,8 +138,7 @@ Success :
         }
         protected bool Initialise(string Uri, string ManagementUri, int UpdateIntervalMinutes, int ServerNotReachableRetries, bool fThrowException)
         {
-            string fn = string.Format("{0}:{1}.{2}", this.GetType().Namespace, this.GetType().Name, System.Reflection.MethodBase.GetCurrentMethod().Name);
-            Debug.WriteLine(fn);
+            Debug.WriteLine("{0}:{1}.{2}", this.GetType().Namespace, this.GetType().Name, System.Reflection.MethodBase.GetCurrentMethod().Name);
 
             var fReturn = false;
             if (_fInitialised) return fReturn;
@@ -195,8 +192,7 @@ Success :
         }
         ~ScheduledTaskWorker()
         {
-            string fn = string.Format("{0}:{1}.{2}", this.GetType().Namespace, this.GetType().Name, System.Reflection.MethodBase.GetCurrentMethod().Name);
-            Debug.WriteLine(fn);
+            Debug.WriteLine("{0}:{1}.{2}", this.GetType().Namespace, this.GetType().Name, System.Reflection.MethodBase.GetCurrentMethod().Name);
 
             if (null != this._stateTimer)
             {
@@ -211,8 +207,7 @@ Success :
 
             if (!_active || !_fInitialised) return;
 
-            string fn = string.Format("{0}:{1}.{2}", this.GetType().Namespace, this.GetType().Name, System.Reflection.MethodBase.GetCurrentMethod().Name);
-            Debug.WriteLine(fn);
+            Debug.WriteLine("{0}:{1}.{2}", this.GetType().Namespace, this.GetType().Name, System.Reflection.MethodBase.GetCurrentMethod().Name);
             try
             {
                 lock (_list)

@@ -15,6 +15,7 @@ namespace CumulusScheduler
 {
     public partial class CumulusSchedulerService : ServiceBase
     {
+        public ManualResetEvent fAbort = new ManualResetEvent(false);
         ScheduledTaskWorker _worker;
 
         public CumulusSchedulerService()
@@ -25,16 +26,13 @@ namespace CumulusScheduler
 
         internal void OnStartInteractive(string[] args)
         {
-            string fn = string.Format("{0}:{1}.{2}", this.GetType().Namespace, this.GetType().Name, System.Reflection.MethodBase.GetCurrentMethod().Name);
-            Debug.WriteLine(fn);
+            Debug.WriteLine("{0}:{1}.{2}", this.GetType().Namespace, this.GetType().Name, System.Reflection.MethodBase.GetCurrentMethod().Name);
 
             try
             {
                 OnStart(args);
-                while(true)
-                {
-                    System.Threading.Thread.Sleep(1000);
-                }
+                fAbort.WaitOne();
+                Debug.WriteLine(string.Format("CancelKeyPress detected. Stopping interactive mode."));
             }
             catch(Exception ex)
             {
@@ -48,8 +46,7 @@ namespace CumulusScheduler
         }
         protected override void OnStart(string[] args)
         {
-            string fn = string.Format("{0}:{1}.{2}", this.GetType().Namespace, this.GetType().Name, System.Reflection.MethodBase.GetCurrentMethod().Name);
-            Debug.WriteLine(fn);
+            Debug.WriteLine("{0}:{1}.{2}", this.GetType().Namespace, this.GetType().Name, System.Reflection.MethodBase.GetCurrentMethod().Name);
             try
             {
                 var Uri = string.Empty;
@@ -79,8 +76,7 @@ namespace CumulusScheduler
         }
         protected override void OnStop()
         {
-            string fn = string.Format("{0}:{1}.{2}", this.GetType().Namespace, this.GetType().Name, System.Reflection.MethodBase.GetCurrentMethod().Name);
-            Debug.WriteLine(fn);
+            Debug.WriteLine("{0}:{1}.{2}", this.GetType().Namespace, this.GetType().Name, System.Reflection.MethodBase.GetCurrentMethod().Name);
 
             _worker.Active = false;
 
@@ -88,8 +84,7 @@ namespace CumulusScheduler
         }
         protected override void OnPause()
         {
-            string fn = string.Format("{0}:{1}.{2}", this.GetType().Namespace, this.GetType().Name, System.Reflection.MethodBase.GetCurrentMethod().Name);
-            Debug.WriteLine(fn);
+            Debug.WriteLine("{0}:{1}.{2}", this.GetType().Namespace, this.GetType().Name, System.Reflection.MethodBase.GetCurrentMethod().Name);
 
             _worker.Active = false;
 
@@ -97,8 +92,7 @@ namespace CumulusScheduler
         }
         protected override void OnContinue()
         {
-            string fn = string.Format("{0}:{1}.{2}", this.GetType().Namespace, this.GetType().Name, System.Reflection.MethodBase.GetCurrentMethod().Name);
-            Debug.WriteLine(fn);
+            Debug.WriteLine("{0}:{1}.{2}", this.GetType().Namespace, this.GetType().Name, System.Reflection.MethodBase.GetCurrentMethod().Name);
 
             _worker.Active = true;
             _worker.UpdateScheduledTasks();
@@ -107,22 +101,19 @@ namespace CumulusScheduler
         }
         protected override void OnCustomCommand(int command)
         {
-            string fn = string.Format("{0}:{1}.{2}", this.GetType().Namespace, this.GetType().Name, System.Reflection.MethodBase.GetCurrentMethod().Name);
-            Debug.WriteLine(fn);
+            Debug.WriteLine("{0}:{1}.{2}", this.GetType().Namespace, this.GetType().Name, System.Reflection.MethodBase.GetCurrentMethod().Name);
 
             base.OnCustomCommand(command);
         }
         protected override void OnSessionChange(SessionChangeDescription changeDescription)
         {
-            string fn = string.Format("{0}:{1}.{2}", this.GetType().Namespace, this.GetType().Name, System.Reflection.MethodBase.GetCurrentMethod().Name);
-            Debug.WriteLine(fn);
+            Debug.WriteLine("{0}:{1}.{2}", this.GetType().Namespace, this.GetType().Name, System.Reflection.MethodBase.GetCurrentMethod().Name);
 
             base.OnSessionChange(changeDescription);
         }
         protected override void OnShutdown()
         {
-            string fn = string.Format("{0}:{1}.{2}", this.GetType().Namespace, this.GetType().Name, System.Reflection.MethodBase.GetCurrentMethod().Name);
-            Debug.WriteLine(fn);
+            Debug.WriteLine("{0}:{1}.{2}", this.GetType().Namespace, this.GetType().Name, System.Reflection.MethodBase.GetCurrentMethod().Name);
 
             _worker.Active = false;
 
